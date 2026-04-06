@@ -74,7 +74,7 @@ textarea { width: 100%; height: 160px; padding: 15px; border: 1px solid #e2e8f0;
         <option value="en">Translate to English</option>
         <option value="hi">Translate to Hindi (हिन्दी)</option>
         <option value="ar">Translate to Arabic (العربية)</option>
-        <option value="zh">Translate to Chinese (简体中文)</option>
+        <option value="zh-CN">Translate to Chinese (简体中文)</option>
         <option value="fr">Translate to French (Français)</option>
         <option value="de">Translate to German (Deutsch)</option>
         <option value="ja">Translate to Japanese (日本語)</option>
@@ -128,7 +128,7 @@ document.getElementById('fileInput').addEventListener('change', async (e) => {
             grid.innerHTML = ""; selectedPages = [];
             
             document.getElementById('page-selector-area').style.display = "block";
-            document.getElementById('status-msg').innerHTML = "✅ PDF Loaded Successfully! <br>Please select max 3 pages.";
+            document.getElementById('status-msg').innerHTML = "✅ PDF Loaded! <br>Please select max 3 pages.";
             
             for(let i=1; i<=pdfDoc.numPages; i++) {
                 const div = document.createElement('div');
@@ -139,7 +139,7 @@ document.getElementById('fileInput').addEventListener('change', async (e) => {
                         this.classList.remove('selected');
                         selectedPages = selectedPages.filter(p => p !== i);
                     } else {
-                        if(selectedPages.length >= 3) return alert("You can only translate 3 pages at a time to ensure accuracy.");
+                        if(selectedPages.length >= 3) return alert("You can only translate 3 pages at a time.");
                         this.classList.add('selected');
                         selectedPages.push(i);
                     }
@@ -147,13 +147,13 @@ document.getElementById('fileInput').addEventListener('change', async (e) => {
                 grid.appendChild(div);
             }
         } catch (err) {
-            document.getElementById('status-msg').innerHTML = "❌ Error reading PDF. Please try another file.";
+            document.getElementById('status-msg').innerHTML = "❌ Error reading PDF.";
         }
     };
     reader.readAsArrayBuffer(file);
 });
 
-// 🔥 PRO FIX: Word-Level Chunking (Never cuts a word in half)
+// 🔥 SMART CHUNKING
 function chunkTextSafely(text, limit) {
     const words = text.split(' ');
     let chunks = [];
@@ -173,31 +173,32 @@ function chunkTextSafely(text, limit) {
     return chunks;
 }
 
-// 🔥 SAFE TRANSLATOR ENGINE
+// 🔥🔥 THE GOOGLE TRANSLATE API UPGRADE 🔥🔥
 async function safeTranslateProcess(text, lang) {
     if(!text || text.length < 3) return "";
     
-    // ৪০০ ক্যারেক্টার লিমিট রাখছি, কিন্তু শব্দ না ভেঙে
-    const safeChunks = chunkTextSafely(text, 400); 
+    // Google API can handle much larger chunks, so we increase the limit to 1000
+    const safeChunks = chunkTextSafely(text, 1000); 
     let finalTranslation = "";
     
     for(let chunk of safeChunks) {
         if (!chunk) continue;
         try {
-            const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunk)}&langpair=autodetect|${lang}`;
+            // Using Google's Free GTX Endpoint (Super Powerful & Reliable)
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(chunk)}`;
             const res = await fetch(url);
             const data = await res.json();
             
-            if(data.responseData && data.responseData.translatedText) {
-                // Ignore the API default error string if it still manages to happen
-                if(!data.responseData.translatedText.includes("NO QUERY SPECIFIED")) {
-                    finalTranslation += data.responseData.translatedText + " ";
-                }
+            // Extracting the translated text from Google's response array
+            if(data && data[0]) {
+                let chunkTrans = data[0].map(item => item[0]).join('');
+                finalTranslation += chunkTrans + " ";
             }
-            // 1.5 সেকেন্ডের গ্যাপ (API যাতে ব্লক না করে)
-            await new Promise(r => setTimeout(r, 1500)); 
+            
+            // Google is fast, but a small delay keeps it safe
+            await new Promise(r => setTimeout(r, 600)); 
         } catch(e) {
-            console.error("Translation block failed, skipping to next.");
+            console.error("Chunk error, continuing...");
         }
     }
     return finalTranslation.trim();
@@ -205,7 +206,7 @@ async function safeTranslateProcess(text, lang) {
 
 async function startTranslation() {
     if(selectedPages.length === 0) {
-        alert("Please select at least one page from the grid above!");
+        alert("Please select at least one page!");
         return;
     }
     
@@ -218,42 +219,39 @@ async function startTranslation() {
     
     btn.disabled = true;
     outField.value = ""; inField.value = "";
-    selectedPages.sort((a,b) => a-b); // পেজ নাম্বার সিরিয়াল করার জন্য
+    selectedPages.sort((a,b) => a-b);
 
     for(let i = 0; i < selectedPages.length; i++) {
         let pageNum = selectedPages[i];
-        status.innerHTML = `⏳ Translating Page ${pageNum}...<br><small>Please wait, ensuring high quality for ${langName}.</small>`;
+        status.innerHTML = `⏳ Translating Page ${pageNum}...<br><small>Using Google AI Engine for ${langName}.</small>`;
         
         try {
             const page = await pdfDoc.getPage(pageNum);
             const content = await page.getTextContent();
             
-            // Text cleaning: removing excessive spaces
             let rawText = content.items.map(s => s.str).join(" ").replace(/\s\s+/g, ' ').trim(); 
             
             if(!rawText || rawText.length < 5) {
-                inField.value += `[Page ${pageNum}]\n(No readable text found. Might be an image.)\n\n`;
+                inField.value += `[Page ${pageNum}]\n(No readable text found)\n\n`;
                 outField.value += `--- Page ${pageNum} ---\n(Skipped - No text to translate)\n\n`;
                 continue;
             }
 
             inField.value += `[Original Page ${pageNum}]\n${rawText.substring(0, 400)}...\n\n`;
             
-            // Sending max 2000 characters per page to prevent total crash
-            let textToTranslate = rawText.substring(0, 2000);
+            // Send text to Google API
+            let textToTranslate = rawText.substring(0, 2500);
             const translated = await safeTranslateProcess(textToTranslate, lang); 
             
             outField.value += `--- Translation Page ${pageNum} ---\n${translated}\n\n`;
-            
-            // Auto scroll output box to bottom
             outField.scrollTop = outField.scrollHeight;
 
         } catch(error) {
-            outField.value += `--- Page ${pageNum} Error ---\n(Could not read or translate this page)\n\n`;
+            outField.value += `--- Page ${pageNum} Error ---\n(Could not read this page)\n\n`;
         }
     }
     
-    status.innerHTML = "✅ Successfully Completed!";
+    status.innerHTML = "✅ Successfully Translated!";
     btn.disabled = false;
 }
 </script>
