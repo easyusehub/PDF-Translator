@@ -5,45 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Premium PDF Translator – EasyUseHub</title>
 <style>
-:root { --primary: #2563eb; --bg: #f1f5f9; }
-body, html { margin:0; padding:0; font-family: 'Inter', sans-serif; background:var(--bg); color: #1e293b; }
+:root { --primary: #2563eb; --bg: #f8fafc; }
+body, html { margin:0; padding:0; font-family: 'Segoe UI', sans-serif; background:var(--bg); }
 
-header { background: linear-gradient(135deg, #1e40af, #2563eb); color:#fff; padding:25px; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.1); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
-header h1 { margin:0; font-size:1.6rem; letter-spacing: 1px; }
+header { background: linear-gradient(135deg, #1e40af, #2563eb); color:#fff; padding:20px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.1); border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; }
+header h1 { margin:0; font-size:1.5rem; }
 
-.container { width: 100%; max-width: 850px; margin:auto; padding:15px; box-sizing: border-box; text-align:center; }
+.container { width: 100%; max-width: 800px; margin:auto; padding:10px; box-sizing: border-box; text-align:center; }
 
-/* 🔥 Premium Ad Boxes with Descriptions */
+/* 🔥 Premium Ad Boxes */
 .custom-ad-bridge {
-    background: white; border-left: 6px solid #fbbf24; color: #1e293b; padding: 18px; margin: 20px auto; border-radius: 12px; cursor: pointer;
-    width: 95%; max-width: 700px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: left; transition: 0.3s;
+    background: #fff; border-left: 6px solid #fbbf24; color: #1e293b; padding: 15px; margin: 15px auto; border-radius: 10px; cursor: pointer;
+    width: 95%; max-width: 650px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); text-align: left; display: block; border-top: none; border-right: none; border-bottom: none;
 }
-.custom-ad-bridge:hover { transform: translateY(-3px); }
-.ad-title { font-size: 16px; font-weight: bold; color: #2563eb; display: block; margin-bottom: 5px; }
-.ad-desc { font-size: 12px; color: #64748b; line-height: 1.5; margin-bottom: 12px; display: block; }
-.ad-btn { background: #2563eb; color: #fff; padding: 7px 18px; border-radius: 6px; font-weight: bold; font-size: 11px; border:none; text-transform: uppercase; cursor:pointer;}
+.ad-title { font-size: 15px; font-weight: bold; color: #2563eb; display: block; margin-bottom: 3px; }
+.ad-desc { font-size: 11px; color: #64748b; display: block; margin-bottom: 10px; line-height: 1.4; }
+.ad-btn { background: #2563eb; color: #fff; padding: 6px 15px; border-radius: 5px; font-weight: bold; font-size: 11px; border:none; cursor:pointer; }
 
-/* Main UI */
-#upload-box { border:2px dashed #94a3b8; padding:40px; border-radius:18px; background:#fff; margin:20px 0; cursor:pointer; color: #475569; font-weight: 600; transition: 0.3s; }
-#upload-box:hover { border-color: #2563eb; background: #eff6ff; }
+/* UI */
+#upload-box { border:3px dashed #2563eb; padding:30px; border-radius:15px; background:#fff; margin:15px 0; cursor:pointer; color: #2563eb; font-weight: bold; }
+#page-selector-area { display:none; background:#fff; padding:15px; border-radius:12px; margin:15px 0; border:1px solid #ddd; }
+.page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 10px; margin-top: 10px; max-height: 200px; overflow-y: auto; padding: 5px; }
+.page-item { padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; background: #fff; }
+.page-item.selected { background: #2563eb; color: #fff; border-color: #2563eb; }
 
-#page-selector-area { display:none; background:#fff; padding:20px; border-radius:15px; margin:20px 0; border:1px solid #e2e8f0; }
-.page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 12px; margin-top: 15px; max-height: 250px; overflow-y: auto; padding: 5px; }
-.page-item { padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: bold; background: #fff; transition: 0.2s; }
-.page-item.selected { background: #2563eb; color: #fff; border-color: #2563eb; transform: scale(1.05); }
+select { padding: 12px; border-radius: 8px; border: 2px solid #2563eb; width: 100%; max-width: 400px; margin-bottom: 15px; font-weight: 600; }
+textarea { width: 100%; height: 140px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; margin: 10px 0; font-size: 13px; line-height: 1.5; resize: none; }
 
-select { padding: 14px; border-radius: 10px; border: 2px solid #e2e8f0; width: 100%; max-width: 450px; margin-bottom: 15px; font-weight: 600; outline: none; background: white; }
-select:focus { border-color: #2563eb; }
+.main-btn { width: 100%; max-width: 350px; padding: 16px; border: none; border-radius: 12px; background: #10b981; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; margin: 10px 0; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+.main-btn:disabled { background: #9ca3af; cursor: not-allowed; }
 
-.main-btn { width: 100%; max-width: 400px; padding: 18px; border: none; border-radius: 12px; background: #10b981; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; margin: 15px 0; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: 0.3s; }
-.main-btn:active { transform: scale(0.97); }
-
-textarea { width: 100%; height: 160px; padding: 15px; border: 1px solid #cbd5e1; border-radius: 12px; box-sizing: border-box; margin: 12px 0; font-size: 14px; background: #fff; line-height: 1.6; resize: none; color: #334155; }
-.output-box { border-left: 6px solid #10b981; }
-
-#status-msg { margin: 15px 0; font-weight: bold; font-size: 14px; }
-.nav-group { display: flex; justify-content: center; gap: 12px; margin: 25px 0; }
-.nav-btn { padding: 12px 25px; border-radius: 8px; background: #334155; color: #fff; font-weight: bold; text-decoration: none; border:none; font-size: 13px; }
+#status-msg { margin: 10px 0; font-weight: bold; color: #4b5563; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -51,19 +43,20 @@ textarea { width: 100%; height: 160px; padding: 15px; border: 1px solid #cbd5e1;
 <header><h1>EasyUseHub Translator</h1></header>
 
 <div class="container">
+    
     <div class="custom-ad-bridge" onclick="window.open('https://easyusehub.blogspot.com', '_blank')">
-        <span class="ad-title">🚀 46+ Premium Online Tools</span>
-        <span class="ad-desc">Explore a wide range of free utilities including PDF editors, image compressors, and more at EasyUseHub.</span>
+        <span class="ad-title">🚀 Unlock 46+ Premium Free Tools</span>
+        <span class="ad-desc">Explore PDF editors, image compressors, and smart calculators at EasyUseHub for free.</span>
         <button class="ad-btn">Explore Now</button>
     </div>
 
     <div id="upload-box" onclick="document.getElementById('fileInput').click()">📁 Click to Upload PDF</div>
     <input type="file" id="fileInput" accept=".pdf" hidden>
     
-    <div id="status-msg">Upload a PDF to select up to 3 pages.</div>
+    <div id="status-msg">Select up to 3 pages for the best result.</div>
 
     <div id="page-selector-area">
-        <strong style="color: #ef4444;">Select up to 3 pages:</strong>
+        <strong style="color:#ef4444; font-size: 13px;">Select Pages (Max 3):</strong>
         <div class="page-grid" id="page-grid"></div>
     </div>
 
@@ -71,39 +64,34 @@ textarea { width: 100%; height: 160px; padding: 15px; border: 1px solid #cbd5e1;
         <option value="bn">Translate to Bangla (বাংলা)</option>
         <option value="en">Translate to English</option>
         <option value="hi">Translate to Hindi (हिन्दी)</option>
-        <option value="ar">Translate to Arabic (العربية)</option>
         <option value="zh">Translate to Chinese (简体中文)</option>
-        <option value="es">Translate to Spanish (Español)</option>
+        <option value="ja">Translate to Japanese (日本語)</option>
+        <option value="ar">Translate to Arabic (العربية)</option>
+        <option value="ru">Translate to Russian (Русский)</option>
         <option value="fr">Translate to French (Français)</option>
         <option value="de">Translate to German (Deutsch)</option>
-        <option value="ja">Translate to Japanese (日本語)</option>
-        <option value="ru">Translate to Russian (Русский)</option>
+        <option value="es">Translate to Spanish (Español)</option>
         <option value="pt">Translate to Portuguese (Português)</option>
         <option value="ko">Translate to Korean (한국어)</option>
         <option value="it">Translate to Italian (Italiano)</option>
         <option value="tr">Translate to Turkish (Türkçe)</option>
-        <option value="ur">Translate to Urdu (اردو)</option>
+        <option value="ur">Translate to Urdu (اردো)</option>
     </select>
 
     <button class="main-btn" id="transBtn" onclick="startTranslation()">🌐 Start Translation</button>
 
-    <textarea id="inputText" placeholder="Original text..." readonly></textarea>
-    <textarea id="outputText" class="output-box" placeholder="Translated text will appear here..." readonly></textarea>
+    <textarea id="inputText" placeholder="Original content..." readonly></textarea>
+    <textarea id="outputText" placeholder="Translation..." style="border-left: 5px solid #10b981;" readonly></textarea>
 
     <div class="custom-ad-bridge" style="border-left-color: #8b5cf6;" onclick="window.open('https://easyusehub.blogspot.com', '_blank')">
         <span class="ad-title" style="color:#8b5cf6;">🔢 Smart Online Calculators</span>
-        <span class="ad-desc">Get fast results with our Age, BMI, and Loan EMI calculators. 100% accurate and easy to use.</span>
-        <button class="ad-btn" style="background:#8b5cf6;">Try Calculators</button>
-    </div>
-
-    <div class="nav-group">
-        <a href="https://easyusehub.blogspot.com" class="nav-btn">🏠 Home</a>
-        <a href="https://easyusehub.blogspot.com/p/free-pdf-tools-online.html" class="nav-btn">📂 More Tools</a>
+        <span class="ad-desc">Use our high-speed Age, BMI, and Loan calculators for 100% accurate results.</span>
+        <button class="ad-btn" style="background:#8b5cf6;">Try Now</button>
     </div>
 
     <div class="custom-ad-bridge" style="border-left-color: #10b981;" onclick="window.open('https://easyusehub.blogspot.com', '_blank')">
-        <span class="ad-title" style="color:#10b981;">⚡ Ultra-Fast Image Compressor</span>
-        <span class="ad-desc">Optimize your images for faster web loading without losing any quality. Perfect for SEO.</span>
+        <span class="ad-title" style="color:#10b981;">⚡ Ultra Image Compressor</span>
+        <span class="ad-desc">Optimize images for your blog without losing quality. Fast and simple!</span>
         <button class="ad-btn" style="background:#10b981;">Compress Now</button>
     </div>
 </div>
@@ -115,7 +103,7 @@ let selectedPages = [];
 
 document.getElementById('fileInput').addEventListener('change', async (e) => {
     const file = e.target.files[0];
-    if(!file || file.type !== "application/pdf") return;
+    if(!file) return;
     
     document.getElementById('status-msg').textContent = "⏳ Analyzing PDF...";
     const reader = new FileReader();
@@ -126,7 +114,7 @@ document.getElementById('fileInput').addEventListener('change', async (e) => {
         const grid = document.getElementById('page-grid');
         grid.innerHTML = ""; selectedPages = [];
         document.getElementById('page-selector-area').style.display = "block";
-        document.getElementById('status-msg').innerHTML = "✅ PDF Ready! Select 3 pages to translate.";
+        document.getElementById('status-msg').innerHTML = "✅ PDF Loaded. Select 3 pages.";
 
         for(let i=1; i<=pdfDoc.numPages; i++) {
             const div = document.createElement('div');
@@ -137,7 +125,7 @@ document.getElementById('fileInput').addEventListener('change', async (e) => {
                     this.classList.remove('selected');
                     selectedPages = selectedPages.filter(p => p !== i);
                 } else {
-                    if(selectedPages.length >= 3) return alert("You can translate max 3 pages at a time.");
+                    if(selectedPages.length >= 3) return alert("Please select only 3 pages.");
                     this.classList.add('selected');
                     selectedPages.push(i);
                 }
@@ -149,7 +137,7 @@ document.getElementById('fileInput').addEventListener('change', async (e) => {
 });
 
 async function startTranslation() {
-    if(selectedPages.length === 0) return alert("Select pages first!");
+    if(selectedPages.length === 0) return alert("Please select pages!");
     
     const lang = document.getElementById('targetLang').value;
     const status = document.getElementById('status-msg');
@@ -158,7 +146,7 @@ async function startTranslation() {
     const btn = document.getElementById('transBtn');
     
     btn.disabled = true;
-    status.innerHTML = "🔄 Translating... <br>Please wait (2.5s delay for accuracy).";
+    status.innerHTML = "🔄 Translating... <br>Please wait 2.5s per page.";
     outField.value = ""; inField.value = "";
 
     try {
@@ -167,14 +155,16 @@ async function startTranslation() {
             const page = await pdfDoc.getPage(pageNum);
             const content = await page.getTextContent();
             
+            // 🔥 Text Cleaning logic to avoid "No Query Specified"
             let text = content.items.map(s => s.str).join(" ").replace(/\s\s+/g, ' ').trim();
             
-            if(text.length < 5) {
-                inField.value += `[Page ${pageNum}]: No readable text.\n\n`;
+            if(!text || text.length < 5) {
+                inField.value += `[Page ${pageNum}]: No readable text found.\n\n`;
+                outField.value += `--- Page ${pageNum} ---\n(Skipped: Empty or Image page)\n\n`;
                 continue;
             }
 
-            text = text.substring(0, 850); 
+            text = text.substring(0, 900); // Safe length
             inField.value += `[Original Page ${pageNum}]\n${text}\n\n`;
 
             await new Promise(res => setTimeout(res, 2500)); 
@@ -183,13 +173,15 @@ async function startTranslation() {
             const response = await fetch(apiUrl);
             const data = await response.json();
             
-            if(data.responseData) {
-                outField.value += `--- Page ${pageNum} Translated --- \n` + data.responseData.translatedText + "\n\n";
+            if(data.responseData && data.responseData.translatedText) {
+                outField.value += `--- Page ${pageNum} Translation ---\n` + data.responseData.translatedText + "\n\n";
+            } else {
+                outField.value += `--- Page ${pageNum} Error ---\n(Could not translate this page)\n\n`;
             }
         }
-        status.textContent = "✅ Successfully Translated!";
+        status.textContent = "✅ Completed!";
     } catch (err) {
-        status.innerHTML = "<span style='color:red;'>❌ API Limit. Please try again in a minute.</span>";
+        status.innerHTML = "<span style='color:red;'>❌ API Limit. Try with 1 page or wait.</span>";
     }
     btn.disabled = false;
 }
